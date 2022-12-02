@@ -37,8 +37,8 @@ namespace CarRentalManagement.Server.Controllers
         {
             //return await _context.Customers.ToListAsync();
             //Refacted
-            var makes = await _unitOfWork.Customers.GetAll();
-            return Ok(makes);
+            var customers = await _unitOfWork.Customers.GetAll();
+            return Ok(customers);
         }
 
         // GET: api/Customers/5
@@ -46,30 +46,30 @@ namespace CarRentalManagement.Server.Controllers
         //public async Task<ActionResult<Customer>> GetCustomer(int id)
         public async Task<IActionResult> GetCustomer (int id )
         {
-            //var make = await _context.Customers.FindAsync(id);
-            var make = await _unitOfWork.Customers.Get(q => q.Id == id);
+            //var customer = await _context.Customers.FindAsync(id);
+            var customer = await _unitOfWork.Customers.Get(q => q.Id == id);
 
-            if (make == null)
+            if (customer == null)
             {
                 return NotFound();
             }
 
-            //return make;
-            return Ok(make);
+            //return customer;
+            return Ok(customer);
         }
 
         // PUT: api/Customers/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCustomer(int id, Customer make)
+        public async Task<IActionResult> PutCustomer(int id, Customer customer)
         {
-            if (id != make.Id)
+            if (id != customer.Id)
             {
                 return BadRequest();
             }
 
-            //_context.Entry(make).State = EntityState.Modified;
-            _unitOfWork.Customers.Update(make);
+            //_context.Entry(customer).State = EntityState.Modified;
+            _unitOfWork.Customers.Update(customer);
 
             try
             {
@@ -78,7 +78,7 @@ namespace CarRentalManagement.Server.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (id!=make.Id)
+                if (id!=customer.Id)
                 {
                     return NotFound();
                 }
@@ -94,29 +94,29 @@ namespace CarRentalManagement.Server.Controllers
         // POST: api/Customers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Customer>> PostCustomer(Customer make)
+        public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
         {
-            // _context.Customers.Add(make);
+            // _context.Customers.Add(customer);
             // await _context.SaveChangesAsync();
-            await _unitOfWork.Customers.Insert(make);
+            await _unitOfWork.Customers.Insert(customer);
             await _unitOfWork.Save(HttpContext);
 
-            return CreatedAtAction("GetCustomer", new { id = make.Id }, make);
+            return CreatedAtAction("GetCustomer", new { id = customer.Id }, customer);
         }
 
         // DELETE: api/Customers/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCustomer(int id)
         {
-            //var make = await _context.Customers.FindAsync(id);
+            //var customer = await _context.Customers.FindAsync(id);
 
-            var make = await _unitOfWork.Customers.Get(q => q.Id == id);
-            if (make == null)
+            var customer = await _unitOfWork.Customers.Get(q => q.Id == id);
+            if (customer == null)
             {
                 return NotFound();
             }
 
-            //_context.Customers.Remove(make);
+            //_context.Customers.Remove(customer);
             //await _context.SaveChangesAsync();
 
             await _unitOfWork.Customers.Delete(id);
@@ -128,8 +128,8 @@ namespace CarRentalManagement.Server.Controllers
         private async Task<bool> CustomerExists(int id)
         {
             // return _context.Customers.Any(e => e.Id == id);
-            var make = await _unitOfWork.Customers.Get(q => q.Id == id);
-            return make != null;
+            var customer = await _unitOfWork.Customers.Get(q => q.Id == id);
+            return customer != null;
         }
     }
 }

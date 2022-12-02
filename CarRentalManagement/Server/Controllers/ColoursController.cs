@@ -13,7 +13,7 @@ namespace CarRentalManagement.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VehiclesController : ControllerBase
+    public class ColoursController : ControllerBase
     {
         //private object unitOfWork;
 
@@ -21,55 +21,55 @@ namespace CarRentalManagement.Server.Controllers
         //private readonly ApplicationDbContext _context;
         private readonly IUnitOfWork _unitOfWork;
 
-       // public VehiclesController(ApplicationDbContext context)
-        public VehiclesController(IUnitOfWork unitOfWork)
+       // public ColoursController(ApplicationDbContext context)
+        public ColoursController(IUnitOfWork unitOfWork)
         {
             //Refacted
             //_context = context;
             _unitOfWork = unitOfWork;
         }
 
-        // GET: api/Vehicles
+        // GET: api/Colours
         [HttpGet]
         //Refacted
-        //public async Task<ActionResult<IEnumerable<Vehicle>>> GetVehicles()
-        public async Task<IActionResult> GetVehicles()
+        //public async Task<ActionResult<IEnumerable<Colour>>> GetColours()
+        public async Task<IActionResult> GetColours()
         {
-            //return await _context.Vehicles.ToListAsync();
+            //return await _context.Colours.ToListAsync();
             //Refacted
-            var makes = await _unitOfWork.Vehicles.GetAll();
-            return Ok(makes);
+            var colours = await _unitOfWork.Colours.GetAll();
+            return Ok(colours);
         }
 
-        // GET: api/Vehicles/5
+        // GET: api/Colours/5
         [HttpGet("{id}")]
-        //public async Task<ActionResult<Vehicle>> GetVehicle(int id)
-        public async Task<IActionResult> GetVehicle (int id )
+        //public async Task<ActionResult<Colour>> GetColour(int id)
+        public async Task<IActionResult> GetColour (int id )
         {
-            //var make = await _context.Vehicles.FindAsync(id);
-            var make = await _unitOfWork.Vehicles.Get(q => q.Id == id);
+            //var colour = await _context.Colours.FindAsync(id);
+            var colour = await _unitOfWork.Colours.Get(q => q.Id == id);
 
-            if (make == null)
+            if (colour == null)
             {
                 return NotFound();
             }
 
-            //return make;
-            return Ok(make);
+            //return colour;
+            return Ok(colour);
         }
 
-        // PUT: api/Vehicles/5
+        // PUT: api/Colours/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutVehicle(int id, Vehicle make)
+        public async Task<IActionResult> PutColour(int id, Colour colour)
         {
-            if (id != make.Id)
+            if (id != colour.Id)
             {
                 return BadRequest();
             }
 
-            //_context.Entry(make).State = EntityState.Modified;
-            _unitOfWork.Vehicles.Update(make);
+            //_context.Entry(colour).State = EntityState.Modified;
+            _unitOfWork.Colours.Update(colour);
 
             try
             {
@@ -78,7 +78,7 @@ namespace CarRentalManagement.Server.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (id!=make.Id)
+                if (id!=colour.Id)
                 {
                     return NotFound();
                 }
@@ -91,45 +91,45 @@ namespace CarRentalManagement.Server.Controllers
             return NoContent();
         }
 
-        // POST: api/Vehicles
+        // POST: api/Colours
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Vehicle>> PostVehicle(Vehicle make)
+        public async Task<ActionResult<Colour>> PostColour(Colour colour)
         {
-            // _context.Vehicles.Add(make);
+            // _context.Colours.Add(colour);
             // await _context.SaveChangesAsync();
-            await _unitOfWork.Vehicles.Insert(make);
+            await _unitOfWork.Colours.Insert(colour);
             await _unitOfWork.Save(HttpContext);
 
-            return CreatedAtAction("GetVehicle", new { id = make.Id }, make);
+            return CreatedAtAction("GetColour", new { id = colour.Id }, colour);
         }
 
-        // DELETE: api/Vehicles/5
+        // DELETE: api/Colours/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteVehicle(int id)
+        public async Task<IActionResult> DeleteColour(int id)
         {
-            //var make = await _context.Vehicles.FindAsync(id);
+            //var colour = await _context.Colours.FindAsync(id);
 
-            var make = await _unitOfWork.Vehicles.Get(q => q.Id == id);
-            if (make == null)
+            var colour = await _unitOfWork.Colours.Get(q => q.Id == id);
+            if (colour == null)
             {
                 return NotFound();
             }
 
-            //_context.Vehicles.Remove(make);
+            //_context.Colours.Remove(colour);
             //await _context.SaveChangesAsync();
 
-            await _unitOfWork.Vehicles.Delete(id);
+            await _unitOfWork.Colours.Delete(id);
             await _unitOfWork.Save(HttpContext);
 
             return NoContent();
         }
 
-        private async Task<bool> VehicleExists(int id)
+        private async Task<bool> ColourExists(int id)
         {
-            // return _context.Vehicles.Any(e => e.Id == id);
-            var make = await _unitOfWork.Vehicles.Get(q => q.Id == id);
-            return make != null;
+            // return _context.Colours.Any(e => e.Id == id);
+            var colour = await _unitOfWork.Colours.Get(q => q.Id == id);
+            return colour != null;
         }
     }
 }

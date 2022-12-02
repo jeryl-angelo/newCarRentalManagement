@@ -13,7 +13,7 @@ namespace CarRentalManagement.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BookingsController : ControllerBase
+    public class ModelsController : ControllerBase
     {
         //private object unitOfWork;
 
@@ -21,55 +21,55 @@ namespace CarRentalManagement.Server.Controllers
         //private readonly ApplicationDbContext _context;
         private readonly IUnitOfWork _unitOfWork;
 
-       // public BookingsController(ApplicationDbContext context)
-        public BookingsController(IUnitOfWork unitOfWork)
+       // public ModelsController(ApplicationDbContext context)
+        public ModelsController(IUnitOfWork unitOfWork)
         {
             //Refacted
             //_context = context;
             _unitOfWork = unitOfWork;
         }
 
-        // GET: api/Bookings
+        // GET: api/Models
         [HttpGet]
         //Refacted
-        //public async Task<ActionResult<IEnumerable<Booking>>> GetBookings()
-        public async Task<IActionResult> GetBookings()
+        //public async Task<ActionResult<IEnumerable<Model>>> GetModels()
+        public async Task<IActionResult> GetModels()
         {
-            //return await _context.Bookings.ToListAsync();
+            //return await _context.Models.ToListAsync();
             //Refacted
-            var makes = await _unitOfWork.Bookings.GetAll();
-            return Ok(makes);
+            var models = await _unitOfWork.Models.GetAll();
+            return Ok(models);
         }
 
-        // GET: api/Bookings/5
+        // GET: api/Models/5
         [HttpGet("{id}")]
-        //public async Task<ActionResult<Booking>> GetBooking(int id)
-        public async Task<IActionResult> GetBooking (int id )
+        //public async Task<ActionResult<Model>> GetModel(int id)
+        public async Task<IActionResult> GetModel (int id )
         {
-            //var make = await _context.Bookings.FindAsync(id);
-            var make = await _unitOfWork.Bookings.Get(q => q.Id == id);
+            //var model = await _context.Models.FindAsync(id);
+            var model = await _unitOfWork.Models.Get(q => q.Id == id);
 
-            if (make == null)
+            if (model == null)
             {
                 return NotFound();
             }
 
-            //return make;
-            return Ok(make);
+            //return model;
+            return Ok(model);
         }
 
-        // PUT: api/Bookings/5
+        // PUT: api/Models/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutBooking(int id, Booking make)
+        public async Task<IActionResult> PutModel(int id, Model model)
         {
-            if (id != make.Id)
+            if (id != model.Id)
             {
                 return BadRequest();
             }
 
-            //_context.Entry(make).State = EntityState.Modified;
-            _unitOfWork.Bookings.Update(make);
+            //_context.Entry(model).State = EntityState.Modified;
+            _unitOfWork.Models.Update(model);
 
             try
             {
@@ -78,7 +78,7 @@ namespace CarRentalManagement.Server.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (id!=make.Id)
+                if (id!=model.Id)
                 {
                     return NotFound();
                 }
@@ -91,45 +91,45 @@ namespace CarRentalManagement.Server.Controllers
             return NoContent();
         }
 
-        // POST: api/Bookings
+        // POST: api/Models
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Booking>> PostBooking(Booking make)
+        public async Task<ActionResult<Model>> PostModel(Model model)
         {
-            // _context.Bookings.Add(make);
+            // _context.Models.Add(model);
             // await _context.SaveChangesAsync();
-            await _unitOfWork.Bookings.Insert(make);
+            await _unitOfWork.Models.Insert(model);
             await _unitOfWork.Save(HttpContext);
 
-            return CreatedAtAction("GetBooking", new { id = make.Id }, make);
+            return CreatedAtAction("GetModel", new { id = model.Id }, model);
         }
 
-        // DELETE: api/Bookings/5
+        // DELETE: api/Models/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBooking(int id)
+        public async Task<IActionResult> DeleteModel(int id)
         {
-            //var make = await _context.Bookings.FindAsync(id);
+            //var model = await _context.Models.FindAsync(id);
 
-            var make = await _unitOfWork.Bookings.Get(q => q.Id == id);
-            if (make == null)
+            var model = await _unitOfWork.Models.Get(q => q.Id == id);
+            if (model == null)
             {
                 return NotFound();
             }
 
-            //_context.Bookings.Remove(make);
+            //_context.Models.Remove(model);
             //await _context.SaveChangesAsync();
 
-            await _unitOfWork.Bookings.Delete(id);
+            await _unitOfWork.Models.Delete(id);
             await _unitOfWork.Save(HttpContext);
 
             return NoContent();
         }
 
-        private async Task<bool> BookingExists(int id)
+        private async Task<bool> ModelExists(int id)
         {
-            // return _context.Bookings.Any(e => e.Id == id);
-            var make = await _unitOfWork.Bookings.Get(q => q.Id == id);
-            return make != null;
+            // return _context.Models.Any(e => e.Id == id);
+            var model = await _unitOfWork.Models.Get(q => q.Id == id);
+            return model != null;
         }
     }
 }
